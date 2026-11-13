@@ -1,1 +1,1 @@
-# progtamacionlineal-optmizacion
+# programacionlineal-optimizacion
