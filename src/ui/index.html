@@ -55,9 +55,9 @@
             <h2 class="section-heading" id="objective-heading"><b>03</b> Función objetivo</h2>
             <div class="objective-row" id="objective-fields">
               <span class="z-label">Z =</span>
-              <input class="field objective-input" type="number" aria-label="Coeficiente de X1" value="80" placeholder="0">
+              <input class="field objective-input" type="text" inputmode="decimal" aria-label="Coeficiente de X1" value="80" placeholder="0">
               <span class="variable-label">X1</span><span class="operator-plus">+</span>
-              <input class="field objective-input" type="number" aria-label="Coeficiente de X2" value="60" placeholder="0">
+              <input class="field objective-input" type="text" inputmode="decimal" aria-label="Coeficiente de X2" value="60" placeholder="0">
               <span class="variable-label">X2</span>
             </div>
             <div class="variable-buttons">
@@ -70,24 +70,24 @@
             <div class="constraint-head" aria-hidden="true"><span>X1</span><span>X2</span><span>Operador</span><span>RHS</span><span></span></div>
             <div class="constraint-list" id="constraint-list">
               <div class="constraint-row">
-                <input class="field" type="number" aria-label="Coeficiente X1 de restricción 1" value="2" placeholder="0">
-                <input class="field" type="number" aria-label="Coeficiente X2 de restricción 1" value="1" placeholder="0">
+                <input class="field" type="text" inputmode="decimal" aria-label="Coeficiente X1 de restricción 1" value="2" placeholder="0">
+                <input class="field" type="text" inputmode="decimal" aria-label="Coeficiente X2 de restricción 1" value="1" placeholder="0">
                 <select aria-label="Operador de restricción 1"><option>≤</option><option>≥</option><option>=</option></select>
-                <input class="field" type="number" aria-label="Lado derecho de restricción 1" value="100" placeholder="0">
+                <input class="field" type="text" inputmode="decimal" aria-label="Lado derecho de restricción 1" value="100" placeholder="0">
                 <button class="delete-row" type="button" aria-label="Eliminar restricción 1" title="Eliminar fila">⌫</button>
               </div>
               <div class="constraint-row">
-                <input class="field" type="number" aria-label="Coeficiente X1 de restricción 2" value="1" placeholder="0">
-                <input class="field" type="number" aria-label="Coeficiente X2 de restricción 2" value="2" placeholder="0">
+                <input class="field" type="text" inputmode="decimal" aria-label="Coeficiente X1 de restricción 2" value="1" placeholder="0">
+                <input class="field" type="text" inputmode="decimal" aria-label="Coeficiente X2 de restricción 2" value="2" placeholder="0">
                 <select aria-label="Operador de restricción 2"><option>≤</option><option>≥</option><option>=</option></select>
-                <input class="field" type="number" aria-label="Lado derecho de restricción 2" value="80" placeholder="0">
+                <input class="field" type="text" inputmode="decimal" aria-label="Lado derecho de restricción 2" value="80" placeholder="0">
                 <button class="delete-row" type="button" aria-label="Eliminar restricción 2" title="Eliminar fila">⌫</button>
               </div>
               <div class="constraint-row">
-                <input class="field" type="number" aria-label="Coeficiente X1 de restricción 3" value="1" placeholder="0">
-                <input class="field" type="number" aria-label="Coeficiente X2 de restricción 3" value="1" placeholder="0">
+                <input class="field" type="text" inputmode="decimal" aria-label="Coeficiente X1 de restricción 3" value="1" placeholder="0">
+                <input class="field" type="text" inputmode="decimal" aria-label="Coeficiente X2 de restricción 3" value="1" placeholder="0">
                 <select aria-label="Operador de restricción 3"><option>≤</option><option>≥</option><option>=</option></select>
-                <input class="field" type="number" aria-label="Lado derecho de restricción 3" value="60" placeholder="0">
+                <input class="field" type="text" inputmode="decimal" aria-label="Lado derecho de restricción 3" value="60" placeholder="0">
                 <button class="delete-row" type="button" aria-label="Eliminar restricción 3" title="Eliminar fila">⌫</button>
               </div>
             </div>
@@ -96,8 +96,13 @@
               <button class="soft-button" id="clear-all" type="button">Limpiar Todo</button>
             </div>
           </section>
-          <div class="error-banner" role="status"><span class="error-icon">!</span> Error: Campos vacíos o valores no numéricos</div>
-          <button class="resolve-button" type="button">RESOLVER PROBLEMA <span aria-hidden="true">➔</span></button>
+          <div class="error-banner" id="error-banner" role="status" aria-live="polite">
+            <span class="error-icon">!</span>
+            <span id="message-text">Ingresa los datos del problema.</span>
+          </div>
+          <button class="resolve-button" id="resolve-button" type="button">
+            RESOLVER PROBLEMA <span aria-hidden="true">➔</span>
+          </button>
         </form>
       </aside>
       <section class="results-panel" aria-labelledby="results-title">
@@ -170,7 +175,7 @@
       const rowNumber = constraintList.children.length + 1;
       const row = document.createElement('div');
       row.className = 'constraint-row';
-      row.innerHTML = `<input class="field" type="number" aria-label="Coeficiente X1 de restricción ${rowNumber}" placeholder="0"><input class="field" type="number" aria-label="Coeficiente X2 de restricción ${rowNumber}" placeholder="0"><select aria-label="Operador de restricción ${rowNumber}"><option>≤</option><option>≥</option><option>=</option></select><input class="field" type="number" aria-label="Lado derecho de restricción ${rowNumber}" placeholder="0"><button class="delete-row" type="button" aria-label="Eliminar restricción ${rowNumber}" title="Eliminar fila">⌫</button>`;
+      row.innerHTML = `<input class="field" type="text" inputmode="decimal" aria-label="Coeficiente X1 de restricción ${rowNumber}" placeholder="0"><input class="field" type="text" inputmode="decimal" aria-label="Coeficiente X2 de restricción ${rowNumber}" placeholder="0"><select aria-label="Operador de restricción ${rowNumber}"><option>≤</option><option>≥</option><option>=</option></select><input class="field" type="text" inputmode="decimal" aria-label="Lado derecho de restricción ${rowNumber}" placeholder="0"><button class="delete-row" type="button" aria-label="Eliminar restricción ${rowNumber}" title="Eliminar fila">⌫</button>`;
       constraintList.append(row);
     });
     constraintList.addEventListener('click', event => {
@@ -178,7 +183,7 @@
       if (button) button.closest('.constraint-row').remove();
     });
     document.getElementById('clear-all').addEventListener('click', () => {
-      document.querySelectorAll('#problem-form input[type="number"]').forEach(input => input.value = '');
+      document.querySelectorAll('#problem-form input[type="text" inputmode="decimal"]').forEach(input => input.value = '');
       constraintList.replaceChildren();
     });
 
