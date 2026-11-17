@@ -33,7 +33,7 @@
             <h2 class="section-heading" id="method-heading"><b>02</b> Método de Solución</h2>
             <div class="choice-row">
               <label class="choice"><input type="radio" name="method" value="bigm" checked><span>Gran M</span></label>
-              <label class="choice"><input type="radio" name="method" value="revised"><span>Simplex Revisado</span></label>
+              <label class="choice"><input type="radio" name="method" value="revised" disabled><span>Simplex Revisado (próximamente)</span></label>
             </div>
           </section>
           <section class="section" aria-labelledby="objective-heading">
@@ -88,7 +88,7 @@
       <section class="results-panel" aria-labelledby="results-title">
         <div class="results-heading">
           <div><p class="eyebrow">Resumen del modelo</p><h2 class="panel-title" id="results-title">Resultados y Análisis</h2></div>
-          <div class="status">Vista de ejemplo</div>
+          <div class="status">Gran M · solución directa</div>
         </div>
         <div class="tabs" role="tablist" aria-label="Secciones de resultados">
           <button class="tab" role="tab" id="tab-direct" aria-controls="panel-direct" aria-selected="true">Solución Directa</button>
@@ -98,16 +98,14 @@
         </div>
         <section class="tab-panel" role="tabpanel" id="panel-direct" aria-labelledby="tab-direct">
           <div class="metric-grid">
-            <article class="metric-card"><p class="metric-label">Variable de decisión</p><p class="metric-value">42 <small>X1</small></p></article>
-            <article class="metric-card"><p class="metric-label">Variable de decisión</p><p class="metric-value">16 <small>X2</small></p></article>
-            <article class="metric-card"><p class="metric-label">Valor óptimo · Z</p><p class="metric-value">3380</p></article>
+            <article class="metric-card"><p class="metric-label">Variables de decisión</p><div id="solution-variables"><p class="metric-value">—</p></div></article>
+            <article class="metric-card"><p class="metric-label">Valor óptimo · Z</p><p class="metric-value" id="solution-z">—</p></article>
+            <article class="metric-card"><p class="metric-label">Estado</p><p class="metric-value" id="solution-status">Pendiente</p></article>
           </div>
           <article class="data-card">
             <div class="data-card-header"><h3>Holguras y uso de recursos</h3><span class="table-note">Resumen por restricción</span></div>
-            <div class="table-wrap"><table><thead><tr><th>Recurso</th><th>Disponible</th><th>Utilizado</th><th>Holgura</th><th>Estado</th></tr></thead><tbody>
-              <tr><td><strong>R1</strong></td><td>100</td><td>100</td><td>0</td><td><span class="pill">Activa</span></td></tr>
-              <tr><td><strong>R2</strong></td><td>80</td><td>74</td><td>6</td><td><span class="pill">Disponible</span></td></tr>
-              <tr><td><strong>R3</strong></td><td>60</td><td>58</td><td>2</td><td><span class="pill">Disponible</span></td></tr>
+            <div class="table-wrap"><table><thead><tr><th>Restricción</th><th>Lado derecho</th><th>Uso</th><th>Holgura / exceso</th><th>Estado</th></tr></thead><tbody id="constraint-results">
+              <tr><td colspan="5">Los resultados aparecerán aquí.</td></tr>
             </tbody></table></div>
           </article>
         </section>

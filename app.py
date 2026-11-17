@@ -2,6 +2,7 @@
 from flask import Flask, jsonify, render_template, request
 
 from src.models import FuncionObjetivo, Problema, Restriccion, Variable
+from src.core.gran_m import resolver_gran_m
 
 
 app = Flask(
@@ -17,8 +18,8 @@ def inicio():
     return render_template("index.html")
 
 
-@app.route("/api/validar", methods=["POST"])
-def validar_problema():
+@app.route("/api/resolver", methods=["POST"])
+def resolver_problema():
 
     try:
         datos = request.get_json(silent=True)
@@ -114,12 +115,9 @@ def validar_problema():
             restricciones=restricciones
         )
 
-        return jsonify({
-            "ok": True,
-            "mensaje": "El problema fue recibido y validado correctamente.",
-            "cantidad_variables": len(problema.variables),
-            "cantidad_restricciones": len(problema.restricciones)
-        })
+        resultado = resolver_gran_m(problema)
+        resultado["ok"] = resultado["estado"] in ("optimo", "infactible", "no_acotado")
+        return jsonify(resultado)
 
     except (ValueError, TypeError, KeyError) as error:
 

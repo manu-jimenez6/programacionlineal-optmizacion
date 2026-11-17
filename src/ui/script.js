@@ -134,12 +134,27 @@ problemForm.addEventListener('submit', async event => {
     })
   };
   try {
-    const response = await fetch('/api/validar', {
+    const response = await fetch('/api/resolver', {
       method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
     });
     const result = await response.json();
-    if (!response.ok || !result.ok) throw new Error(result.error || 'No se pudo validar el problema.');
-    showMessage(`✓ Problema validado: ${result.cantidad_variables} variables y ${result.cantidad_restricciones} restricciones.`, true);
+    if (!response.ok || !result.ok) throw new Error(result.error || result.mensaje || 'No se pudo resolver el problema.');
+
+    document.getElementById('solution-status').textContent = result.estado;
+    if (result.estado === 'optimo') {
+      document.getElementById('solution-variables').innerHTML = Object.entries(result.variables)
+        .map(([nombre, valor]) => `<p class="metric-value">${nombre}: ${valor}</p>`).join('');
+      document.getElementById('solution-z').textContent = result.z;
+      document.getElementById('constraint-results').innerHTML = result.restricciones.map(r =>
+        `<tr><td><strong>${r.nombre}</strong></td><td>${r.lado_derecho}</td><td>${r.usado}</td><td>${r.holgura_exceso}</td><td><span class="pill">${r.estado}</span></td></tr>`
+      ).join('');
+      showMessage(result.mensaje, true);
+    } else {
+      document.getElementById('solution-variables').innerHTML = '<p class="metric-value">—</p>';
+      document.getElementById('solution-z').textContent = '—';
+      document.getElementById('constraint-results').innerHTML = `<tr><td colspan="5">${result.mensaje}</td></tr>`;
+      showMessage(result.mensaje);
+    }
   } catch (error) {
     showMessage(`Error: ${error.message || 'No fue posible conectar con el servidor.'}`);
   }
