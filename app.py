@@ -1,16 +1,14 @@
 
 from flask import Flask, jsonify, render_template, request
 
-from src.models.variable import Variable
-from src.models.funcion_objetivo import FuncionObjetivo
-from src.models.restriccion import Restriccion
-from src.models.problema import Problema
+from src.models import FuncionObjetivo, Problema, Restriccion, Variable
 
 
 app = Flask(
     __name__,
     template_folder="src/ui",
-    static_folder="static"
+    static_folder="src/ui",
+    static_url_path=""
 )
 
 
@@ -133,3 +131,5 @@ def validar_problema():
 
 if __name__ == "__main__":
     app.run(debug=True)
+
+

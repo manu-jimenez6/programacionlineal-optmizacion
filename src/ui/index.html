@@ -8,22 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <style>
-    :root{--ink:#241b35;--muted:#827a91;--line:#e9d5ff;--lilac:#f3e8ff;--sky:#38bdf8;--purple:#a78bfa;--pink:#fbcfe8;--red:#9d174d;--white:#fff;--shadow:0 12px 30px rgba(66,36,94,.07)}
-    *{box-sizing:border-box}body{margin:0;background:#fff;color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;font-size:14px}button,input,select{font:inherit}button{cursor:pointer} .app{min-height:100vh}
-    .topbar{height:74px;display:grid;grid-template-columns:1fr 1fr 1fr;align-items:center;padding:0 34px;border-bottom:1px solid #f0eaf6;background:#fff;position:sticky;top:0;z-index:5}.brand{font-size:19px;font-weight:800;letter-spacing:-.65px;color:#34234c;white-space:nowrap}.brand span{color:var(--purple)}.model-button{justify-self:center;border:1px solid var(--line);background:#fff;padding:10px 16px;border-radius:11px;color:#5b4b70;font-weight:600;box-shadow:0 2px 8px #2e183808}.guide{justify-self:end;color:#715b8d;text-decoration:none;font-weight:600}.guide:hover{color:#6d49be}
-    .workspace{display:grid;grid-template-columns:minmax(360px,40%) minmax(0,60%);min-height:calc(100vh - 74px)}.input-panel{background:var(--lilac);padding:34px clamp(22px,3.2vw,52px) 36px;border-right:1px solid var(--line)}.results-panel{padding:38px clamp(24px,4vw,64px);min-width:0}.eyebrow{font-size:11px;letter-spacing:1.2px;text-transform:uppercase;font-weight:700;color:#957ab5;margin:0 0 8px}.panel-title{font-size:23px;letter-spacing:-.6px;margin:0 0 27px;font-weight:700}.section{padding:0 0 21px;margin:0 0 20px;border-bottom:1px solid #dfc8f3}.section-heading{font-size:12px;letter-spacing:.55px;text-transform:uppercase;color:#6c577f;font-weight:700;margin:0 0 12px;display:flex;gap:9px;align-items:center}.section-heading b{color:#a78bfa;font-size:11px}
-    .choice-row{display:flex;gap:9px;flex-wrap:wrap}.choice{position:relative}.choice input{position:absolute;opacity:0;inset:0;width:100%;height:100%;cursor:pointer}.choice span{display:block;padding:10px 14px;background:#fff;border:1px solid var(--line);border-radius:9px;color:#746782;font-weight:600;transition:.18s}.choice input:checked+span{background:#ede3ff;border-color:#b99af4;color:#633f9d;box-shadow:inset 0 0 0 1px #b99af4}.choice input:focus-visible+span{outline:3px solid #38bdf866;outline-offset:2px}
-    .objective-row{display:flex;align-items:center;gap:9px;flex-wrap:wrap}.z-label{font-weight:700;color:#655273}.field{height:40px;min-width:0;width:75px;padding:0 10px;border:1px solid #dec8f2;border-radius:8px;background:#fff;color:var(--ink);outline:none}.field:focus,select:focus{border-color:#a78bfa;box-shadow:0 0 0 3px #a78bfa30}.operator-plus{font-size:17px;color:#957ab5;font-weight:500}.variable-buttons,.constraint-actions{display:flex;gap:9px;margin-top:12px;flex-wrap:wrap}.soft-button{background:#fff;border:1px solid var(--line);border-radius:8px;padding:9px 12px;color:#69547f;font-weight:600;font-size:12px}.soft-button:hover{border-color:#b99af4;background:#fcfaff}.constraint-head{display:grid;grid-template-columns:1fr 1fr 76px 1fr 34px;gap:7px;margin:0 0 7px;color:#9384a2;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.45px}.constraint-head span{text-align:center}.constraint-list{display:grid;gap:8px}.constraint-row{display:grid;grid-template-columns:1fr 1fr 76px 1fr 34px;gap:7px;align-items:center}.constraint-row .field{width:100%;height:38px;text-align:center;padding:0 6px}.constraint-row select{width:100%;height:38px;border:1px solid #dec8f2;border-radius:8px;background:#fff;color:#665477;padding:0 8px;outline:none}.delete-row{height:36px;width:34px;border:0;background:transparent;color:#a77f9c;border-radius:7px;font-size:17px}.delete-row:hover{background:#fce4f1;color:var(--red)}
-    .error-banner{display:flex;gap:8px;align-items:center;background:var(--pink);color:var(--red);padding:11px 13px;border-radius:9px;font-size:12px;font-weight:600;margin:5px 0 16px}.error-icon{font-size:15px}.resolve-button{width:100%;border:0;border-radius:10px;background:var(--purple);color:#fff;padding:15px 16px;font-weight:800;font-size:12px;letter-spacing:.65px;box-shadow:0 5px 12px #a78bfa55;transition:.18s}.resolve-button:hover{background:#9574eb;transform:translateY(-1px)}.resolve-button:active{transform:translateY(0)}
-    .results-heading{display:flex;align-items:end;justify-content:space-between;margin-bottom:24px}.results-heading .panel-title{margin:0}.status{display:flex;align-items:center;gap:7px;color:#8d8498;font-size:11px}.status:before{content:"";height:7px;width:7px;border-radius:50%;background:#c4b5fd}
-    .tabs{display:flex;gap:4px;border-bottom:1px solid #eee6f5;margin-bottom:25px;overflow-x:auto;overflow-y:hidden;scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}.tab{white-space:nowrap;border:0;background:transparent;color:#8b8198;padding:12px 13px 13px;font-size:12px;font-weight:600;border-bottom:2px solid transparent;margin-bottom:-1px}.tab:hover{color:#6b4e91}.tab[aria-selected="true"]{color:#6846a0;border-color:#a78bfa}
-    .tab-panel[hidden]{display:none}.metric-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:25px}.metric-card{border:1px solid #eee5f6;border-radius:13px;padding:17px 18px;background:#fff;box-shadow:var(--shadow)}.metric-label{font-size:11px;font-weight:600;color:#968ba2;margin:0 0 11px}.metric-value{font-size:28px;letter-spacing:-1px;font-weight:700;margin:0;color:#35244b}.metric-value small{font-size:14px;color:#a78bfa;font-weight:600}
-    .data-card{border:1px solid #eee5f6;border-radius:13px;overflow:hidden;background:#fff;box-shadow:var(--shadow);margin-bottom:18px}.data-card-header{padding:16px 18px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #f0eaf5}.data-card-header h3{margin:0;font-size:13px;font-weight:700}.table-note{color:#a198ad;font-size:10px}.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;text-align:left;white-space:nowrap}th{background:#fcfaff;color:#90839d;font-size:10px;text-transform:uppercase;letter-spacing:.5px;font-weight:700;padding:11px 17px}td{padding:12px 17px;border-top:1px solid #f2edf6;color:#655a70;font-size:12px}td strong{color:#47345c}.pill{display:inline-flex;padding:4px 8px;background:#f3eaff;color:#7956aa;border-radius:20px;font-size:10px;font-weight:700}.step-callout{padding:14px 16px;background:#f8f4ff;border:1px solid #eee3ff;border-radius:10px;color:#634a82;font-size:12px;font-weight:600;margin-bottom:16px}.step-callout span{color:#a78bfa;margin-right:7px}.matrix-table th,.matrix-table td{text-align:center;padding:12px 13px}.matrix-table td:first-child,.matrix-table th:first-child{text-align:left}.empty-graph{min-height:340px;border:1px dashed #ddc8f3;border-radius:14px;background-color:#fdfbff;background-image:linear-gradient(#f1e9f9 1px,transparent 1px),linear-gradient(90deg,#f1e9f9 1px,transparent 1px);background-size:32px 32px;display:grid;place-items:center;color:#87759b;font-size:13px;font-weight:600}.empty-graph span{background:#fff;padding:12px 16px;border:1px solid #eee5f6;border-radius:9px;box-shadow:var(--shadow)}.sensitivity-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}.sensitivity-grid .data-card{margin:0}
-    @media(max-width:900px){.workspace{grid-template-columns:minmax(320px,42%) minmax(0,58%)}.input-panel{padding:28px 22px}.results-panel{padding:30px 25px}.constraint-head,.constraint-row{grid-template-columns:1fr 1fr 62px 1fr 30px;gap:5px}}
-    @media(max-width:700px){.topbar{height:64px;padding:0 17px;grid-template-columns:1fr auto 1fr}.brand{font-size:14px;letter-spacing:-.4px}.model-button{font-size:10px;padding:9px 10px}.guide{font-size:12px}.workspace{display:flex;flex-direction:column}.input-panel{border-right:0;border-bottom:1px solid var(--line);padding:28px 20px}.results-panel{padding:28px 20px}.panel-title{font-size:21px}.results-heading{align-items:start;gap:12px;flex-direction:column}.metric-grid{gap:8px}.metric-card{padding:14px 12px}.metric-value{font-size:24px}.metric-label{font-size:10px}.tabs{margin-right:-20px}.sensitivity-grid{grid-template-columns:1fr}}
-    @media(max-width:390px){.topbar{padding:0 12px}.model-button{font-size:9px}.constraint-head,.constraint-row{grid-template-columns:1fr 1fr 56px 1fr 28px}.field{width:64px}.metric-value{font-size:21px}}
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="app">
@@ -55,9 +40,9 @@
             <h2 class="section-heading" id="objective-heading"><b>03</b> Función objetivo</h2>
             <div class="objective-row" id="objective-fields">
               <span class="z-label">Z =</span>
-              <input class="field objective-input" type="text" inputmode="decimal" aria-label="Coeficiente de X1" value="80" placeholder="0">
+              <input class="field objective-input" type="number" aria-label="Coeficiente de X1" value="80" placeholder="0">
               <span class="variable-label">X1</span><span class="operator-plus">+</span>
-              <input class="field objective-input" type="text" inputmode="decimal" aria-label="Coeficiente de X2" value="60" placeholder="0">
+              <input class="field objective-input" type="number" aria-label="Coeficiente de X2" value="60" placeholder="0">
               <span class="variable-label">X2</span>
             </div>
             <div class="variable-buttons">
@@ -70,24 +55,24 @@
             <div class="constraint-head" aria-hidden="true"><span>X1</span><span>X2</span><span>Operador</span><span>RHS</span><span></span></div>
             <div class="constraint-list" id="constraint-list">
               <div class="constraint-row">
-                <input class="field" type="text" inputmode="decimal" aria-label="Coeficiente X1 de restricción 1" value="2" placeholder="0">
-                <input class="field" type="text" inputmode="decimal" aria-label="Coeficiente X2 de restricción 1" value="1" placeholder="0">
+                <input class="field" type="number" aria-label="Coeficiente X1 de restricción 1" value="2" placeholder="0">
+                <input class="field" type="number" aria-label="Coeficiente X2 de restricción 1" value="1" placeholder="0">
                 <select aria-label="Operador de restricción 1"><option>≤</option><option>≥</option><option>=</option></select>
-                <input class="field" type="text" inputmode="decimal" aria-label="Lado derecho de restricción 1" value="100" placeholder="0">
+                <input class="field" type="number" aria-label="Lado derecho de restricción 1" value="100" placeholder="0">
                 <button class="delete-row" type="button" aria-label="Eliminar restricción 1" title="Eliminar fila">⌫</button>
               </div>
               <div class="constraint-row">
-                <input class="field" type="text" inputmode="decimal" aria-label="Coeficiente X1 de restricción 2" value="1" placeholder="0">
-                <input class="field" type="text" inputmode="decimal" aria-label="Coeficiente X2 de restricción 2" value="2" placeholder="0">
+                <input class="field" type="number" aria-label="Coeficiente X1 de restricción 2" value="1" placeholder="0">
+                <input class="field" type="number" aria-label="Coeficiente X2 de restricción 2" value="2" placeholder="0">
                 <select aria-label="Operador de restricción 2"><option>≤</option><option>≥</option><option>=</option></select>
-                <input class="field" type="text" inputmode="decimal" aria-label="Lado derecho de restricción 2" value="80" placeholder="0">
+                <input class="field" type="number" aria-label="Lado derecho de restricción 2" value="80" placeholder="0">
                 <button class="delete-row" type="button" aria-label="Eliminar restricción 2" title="Eliminar fila">⌫</button>
               </div>
               <div class="constraint-row">
-                <input class="field" type="text" inputmode="decimal" aria-label="Coeficiente X1 de restricción 3" value="1" placeholder="0">
-                <input class="field" type="text" inputmode="decimal" aria-label="Coeficiente X2 de restricción 3" value="1" placeholder="0">
+                <input class="field" type="number" aria-label="Coeficiente X1 de restricción 3" value="1" placeholder="0">
+                <input class="field" type="number" aria-label="Coeficiente X2 de restricción 3" value="1" placeholder="0">
                 <select aria-label="Operador de restricción 3"><option>≤</option><option>≥</option><option>=</option></select>
-                <input class="field" type="text" inputmode="decimal" aria-label="Lado derecho de restricción 3" value="60" placeholder="0">
+                <input class="field" type="number" aria-label="Lado derecho de restricción 3" value="60" placeholder="0">
                 <button class="delete-row" type="button" aria-label="Eliminar restricción 3" title="Eliminar fila">⌫</button>
               </div>
             </div>
@@ -96,13 +81,8 @@
               <button class="soft-button" id="clear-all" type="button">Limpiar Todo</button>
             </div>
           </section>
-          <div class="error-banner" id="error-banner" role="status" aria-live="polite">
-            <span class="error-icon">!</span>
-            <span id="message-text">Ingresa los datos del problema.</span>
-          </div>
-          <button class="resolve-button" id="resolve-button" type="button">
-            RESOLVER PROBLEMA <span aria-hidden="true">➔</span>
-          </button>
+          <div class="error-banner" role="alert" hidden><span class="error-icon">!</span> Error: Campos vacíos o valores no numéricos</div>
+          <button class="resolve-button" type="submit">RESOLVER PROBLEMA <span aria-hidden="true">➔</span></button>
         </form>
       </aside>
       <section class="results-panel" aria-labelledby="results-title">
@@ -150,72 +130,11 @@
       </section>
     </main>
   </div>
-  <script>
-    const tabs = [...document.querySelectorAll('[role="tab"]')];
-    tabs.forEach((tab, index) => {
-      tab.addEventListener('click', () => activateTab(tab));
-      tab.addEventListener('keydown', event => {
-        if (!['ArrowLeft','ArrowRight','Home','End'].includes(event.key)) return;
-        event.preventDefault();
-        const next = event.key === 'Home' ? 0 : event.key === 'End' ? tabs.length - 1 : (index + (event.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length;
-        activateTab(tabs[next]); tabs[next].focus();
-      });
-    });
-    function activateTab(selected) {
-      tabs.forEach(tab => {
-        const active = tab === selected;
-        tab.setAttribute('aria-selected', String(active));
-        tab.tabIndex = active ? 0 : -1;
-        document.getElementById(tab.getAttribute('aria-controls')).hidden = !active;
-      });
-    }
-
-    const constraintList = document.getElementById('constraint-list');
-    document.getElementById('add-constraint').addEventListener('click', () => {
-      const rowNumber = constraintList.children.length + 1;
-      const row = document.createElement('div');
-      row.className = 'constraint-row';
-      row.innerHTML = `<input class="field" type="text" inputmode="decimal" aria-label="Coeficiente X1 de restricción ${rowNumber}" placeholder="0"><input class="field" type="text" inputmode="decimal" aria-label="Coeficiente X2 de restricción ${rowNumber}" placeholder="0"><select aria-label="Operador de restricción ${rowNumber}"><option>≤</option><option>≥</option><option>=</option></select><input class="field" type="text" inputmode="decimal" aria-label="Lado derecho de restricción ${rowNumber}" placeholder="0"><button class="delete-row" type="button" aria-label="Eliminar restricción ${rowNumber}" title="Eliminar fila">⌫</button>`;
-      constraintList.append(row);
-    });
-    constraintList.addEventListener('click', event => {
-      const button = event.target.closest('.delete-row');
-      if (button) button.closest('.constraint-row').remove();
-    });
-    document.getElementById('clear-all').addEventListener('click', () => {
-      document.querySelectorAll('#problem-form input[type="text" inputmode="decimal"]').forEach(input => input.value = '');
-      constraintList.replaceChildren();
-    });
-
-    const objectiveFields = document.getElementById('objective-fields');
-    document.getElementById('add-variable').addEventListener('click', () => {
-      const count = objectiveFields.querySelectorAll('.variable-label').length + 1;
-      const plus = document.createElement('span'); plus.className = 'operator-plus'; plus.textContent = '+';
-      const input = document.createElement('input'); input.className = 'field objective-input'; input.type = 'number'; input.placeholder = '0'; input.setAttribute('aria-label', `Coeficiente de X${count}`);
-      const label = document.createElement('span'); label.className = 'variable-label'; label.textContent = `X${count}`;
-      objectiveFields.append(plus, input, label);
-    });
-    document.getElementById('remove-variable').addEventListener('click', () => {
-      const labels = objectiveFields.querySelectorAll('.variable-label');
-      if (labels.length <= 1) return;
-      const lastLabel = labels[labels.length - 1];
-      lastLabel.previousElementSibling.remove(); // coefficient
-      lastLabel.previousElementSibling.remove(); // plus sign
-      lastLabel.remove();
-    });
-
-    const bigMTable = `<table class="matrix-table"><thead><tr><th>Base</th><th>Cb</th><th>X1</th><th>X2</th><th>S1</th><th>S2</th><th>S3</th><th>A1</th><th>RHS</th></tr></thead><tbody><tr><td><strong>S1</strong></td><td>0</td><td>2</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>100</td></tr><tr><td><strong>X2</strong></td><td>60</td><td>1</td><td>2</td><td>0</td><td>1</td><td>0</td><td>0</td><td>16</td></tr><tr><td><strong>S3</strong></td><td>0</td><td>1</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>60</td></tr><tr><td><strong>Z</strong></td><td>—</td><td>80</td><td>60</td><td>0</td><td>0</td><td>0</td><td>M</td><td>3380</td></tr></tbody></table>`;
-    const revisedTable = `<table class="matrix-table"><thead><tr><th>Variables Básicas</th><th>B⁻¹</th><th>Costos Reducidos</th><th>RHS</th></tr></thead><tbody><tr><td><strong>S1</strong></td><td>[1, 0, 0]</td><td>0</td><td>42</td></tr><tr><td><strong>X2</strong></td><td>[0, 1, 0]</td><td>0</td><td>16</td></tr><tr><td><strong>S3</strong></td><td>[0, 0, 1]</td><td>0</td><td>2</td></tr></tbody></table>`;
-    const simplexContainer = document.getElementById('simplex-table-container');
-    function updateSimplexTable() {
-      const method = document.querySelector('input[name="method"]:checked').value;
-      simplexContainer.innerHTML = method === 'bigm' ? bigMTable : revisedTable;
-      document.getElementById('table-method-label').textContent = method === 'bigm' ? 'Método Gran M' : 'Método Simplex Revisado';
-    }
-    document.querySelectorAll('input[name="method"]').forEach(radio => radio.addEventListener('change', updateSimplexTable));
-    updateSimplexTable();
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
+
+
+
 
 
