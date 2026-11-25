@@ -3,6 +3,7 @@ from flask import Flask, jsonify, render_template, request
 
 from src.models import FuncionObjetivo, Problema, Restriccion, Variable
 from src.core.gran_m import resolver_gran_m
+from src.core.simplex_revisado import resolver_simplex_revisado
 
 
 app = Flask(
@@ -115,7 +116,13 @@ def resolver_problema():
             restricciones=restricciones
         )
 
-        resultado = resolver_gran_m(problema)
+        metodo = datos.get("metodo", "gran_m")
+        if metodo == "simplex_revisado":
+            resultado = resolver_simplex_revisado(problema)
+        elif metodo == "gran_m":
+            resultado = resolver_gran_m(problema)
+        else:
+            raise ValueError("Método de solución inválido.")
         resultado["ok"] = resultado["estado"] in ("optimo", "infactible", "no_acotado")
         return jsonify(resultado)
 

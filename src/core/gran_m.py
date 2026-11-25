@@ -1,20 +1,14 @@
-"""Solucionador de programacion lineal con el metodo de la Gran M.
-
-Usamos fracciones exactas. El costo de cada columna se guarda como (parte
-normal, coeficiente de M), para no escoger un valor numerico arbitrario para M.
-"""
-
 from fractions import Fraction
 
 
 def _mostrar(numero):
-    """Devuelve enteros y fracciones como texto legible."""
+    "esto es para mostrar fracciones de manera bonita basicamente"
     numero = Fraction(numero)
     return str(numero.numerator) if numero.denominator == 1 else f"{numero.numerator}/{numero.denominator}"
 
 
 def resolver_gran_m(problema):
-    """Resuelve un Problema y devuelve una respuesta lista para la API."""
+
     columnas = []
     costos = []
     nombres = []
@@ -24,7 +18,7 @@ def resolver_gran_m(problema):
     tipos = []
     artificiales = set()
 
-    # Primero normalizamos RHS negativos y creamos las columnas de decision.
+    # Primero normalizan RHS negativos y se crean las columnas de decision.
     for j, variable in enumerate(problema.variables):
         if not variable.no_negativa:
             raise ValueError("Por ahora todas las variables deben ser no negativas.")

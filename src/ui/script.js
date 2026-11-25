@@ -52,12 +52,16 @@ const tabs = [...document.querySelectorAll('[role="tab"]')];
     });
 
     const bigMTable = `<table class="matrix-table"><thead><tr><th>Base</th><th>Cb</th><th>X1</th><th>X2</th><th>S1</th><th>S2</th><th>S3</th><th>A1</th><th>RHS</th></tr></thead><tbody><tr><td><strong>S1</strong></td><td>0</td><td>2</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>100</td></tr><tr><td><strong>X2</strong></td><td>60</td><td>1</td><td>2</td><td>0</td><td>1</td><td>0</td><td>0</td><td>16</td></tr><tr><td><strong>S3</strong></td><td>0</td><td>1</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>60</td></tr><tr><td><strong>Z</strong></td><td>—</td><td>80</td><td>60</td><td>0</td><td>0</td><td>0</td><td>M</td><td>3380</td></tr></tbody></table>`;
-    const revisedTable = `<table class="matrix-table"><thead><tr><th>Variables Básicas</th><th>B⁻¹</th><th>Costos Reducidos</th><th>RHS</th></tr></thead><tbody><tr><td><strong>S1</strong></td><td>[1, 0, 0]</td><td>0</td><td>42</td></tr><tr><td><strong>X2</strong></td><td>[0, 1, 0]</td><td>0</td><td>16</td></tr><tr><td><strong>S3</strong></td><td>[0, 0, 1]</td><td>0</td><td>2</td></tr></tbody></table>`;
     const simplexContainer = document.getElementById('simplex-table-container');
     function updateSimplexTable() {
       const method = document.querySelector('input[name="method"]:checked').value;
-      simplexContainer.innerHTML = method === 'bigm' ? bigMTable : revisedTable;
+      simplexContainer.innerHTML = method === 'bigm'
+        ? bigMTable
+        : '<p>El Simplex revisado calcula la solución usando la base y su inversa. El detalle de iteraciones se implementará en la vista paso a paso.</p>';
       document.getElementById('table-method-label').textContent = method === 'bigm' ? 'Método Gran M' : 'Método Simplex Revisado';
+      document.querySelector('.status').textContent = method === 'bigm'
+        ? 'Gran M · solución directa'
+        : 'Simplex revisado · solución directa';
     }
     document.querySelectorAll('input[name="method"]').forEach(radio => radio.addEventListener('change', updateSimplexTable));
     updateSimplexTable();
@@ -120,7 +124,10 @@ problemForm.addEventListener('submit', async event => {
     return;
   }
   const sentido = document.querySelector('input[name="optimization"]:checked').value === 'max' ? 'maximizar' : 'minimizar';
+  const metodo = document.querySelector('input[name="method"]:checked').value === 'revised'
+    ? 'simplex_revisado' : 'gran_m';
   const payload = {
+    metodo,
     variables: variableNames.map(nombre => ({ nombre, no_negativa: true })),
     funcion_objetivo: { sentido, coeficientes: objectiveValues },
     restricciones: rows.map(row => {
