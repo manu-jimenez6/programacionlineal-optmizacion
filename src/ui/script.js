@@ -55,6 +55,8 @@ const tabs = [...document.querySelectorAll('[role="tab"]')];
       const method = document.querySelector('input[name="method"]:checked').value;
       document.getElementById('table-method-label').textContent = method === 'bigm' ? 'Método Gran M' : 'Método Simplex Revisado';
       document.getElementById('step-iterations').innerHTML = '<p class="step-empty">Resuelve el problema con este método para ver sus iteraciones.</p>';
+      document.getElementById('standard-form-content').textContent = '';
+      document.getElementById('standard-form-block').hidden = true;
       document.querySelector('.status').textContent = method === 'bigm'
         ? 'Gran M · solución directa'
         : 'Simplex revisado · solución directa';
@@ -65,8 +67,13 @@ const tabs = [...document.querySelectorAll('[role="tab"]')];
     function renderStepByStep(stepData) {
       const container = document.getElementById('step-iterations');
       container.innerHTML = '';
+      const standardBlock = document.getElementById('standard-form-block');
+      const standardContent = document.getElementById('standard-form-content');
+      standardContent.textContent = stepData?.forma_estandar || '';
+      standardBlock.hidden = !stepData?.forma_estandar;
       if (!stepData || !Array.isArray(stepData.columnas) || !Array.isArray(stepData.iteraciones)) {
         container.innerHTML = '<p class="step-empty">El servidor no devolvió iteraciones para este método.</p>';
+        standardBlock.hidden = true;
         return;
       }
       document.getElementById('table-method-label').textContent = stepData.metodo === 'simplex_revisado' ? 'Método Simplex Revisado' : 'Método Gran M';
@@ -78,7 +85,17 @@ const tabs = [...document.querySelectorAll('[role="tab"]')];
         const number = document.createElement('span');
         number.className = 'step-index';
         number.textContent = `Iteración ${iteration.numero ?? index}`;
-        reason.append(number, document.createTextNode(iteration.justificacion || 'Iteración del método.'));
+        const justification = document.createElement('p');
+        justification.className = 'step-justification';
+        justification.textContent = iteration.justificacion || 'Iteración del método.';
+        reason.append(number, justification);
+        const ratio = document.createElement('p');
+        ratio.className = 'step-detail';
+        ratio.textContent = `Prueba de la razón mínima: ${iteration.prueba_razon_minima || 'No disponible.'}`;
+        const pivot = document.createElement('p');
+        pivot.className = 'step-detail';
+        pivot.textContent = `Pivote: ${iteration.pivote || 'No disponible.'}`;
+        reason.append(ratio, pivot);
 
         const tableWrap = document.createElement('div');
         tableWrap.className = 'table-wrap';
