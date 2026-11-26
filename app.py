@@ -2,6 +2,8 @@
 from flask import Flask, jsonify, render_template, request
 
 from src.models import FuncionObjetivo, Problema, Restriccion, Variable
+from src.models.paso_a_paso import PasoAPaso
+from src.ui.paso_a_paso import renderizar_paso_a_paso
 from src.core.gran_m import resolver_gran_m
 from src.core.simplex_revisado import resolver_simplex_revisado
 
@@ -16,7 +18,10 @@ app = Flask(
 
 @app.route("/")
 def inicio():
-    return render_template("index.html")
+    return render_template(
+        "index.html",
+        paso_a_paso_html=renderizar_paso_a_paso(),
+    )
 
 
 @app.route("/api/resolver", methods=["POST"])
@@ -124,6 +129,13 @@ def resolver_problema():
         else:
             raise ValueError("Método de solución inválido.")
         resultado["ok"] = resultado["estado"] in ("optimo", "infactible", "no_acotado")
+        if resultado["estado"] == "optimo":
+            generador_pasos = PasoAPaso()
+            resultado["paso_a_paso"] = (
+                generador_pasos.generar_simplex_revisado(datos)
+                if metodo == "simplex_revisado"
+                else generador_pasos.generar_gran_m(datos)
+            )
         return jsonify(resultado)
 
     except (ValueError, TypeError, KeyError) as error:

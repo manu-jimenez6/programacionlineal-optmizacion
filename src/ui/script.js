@@ -51,20 +51,70 @@ const tabs = [...document.querySelectorAll('[role="tab"]')];
       lastLabel.remove();
     });
 
-    const bigMTable = `<table class="matrix-table"><thead><tr><th>Base</th><th>Cb</th><th>X1</th><th>X2</th><th>S1</th><th>S2</th><th>S3</th><th>A1</th><th>RHS</th></tr></thead><tbody><tr><td><strong>S1</strong></td><td>0</td><td>2</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>100</td></tr><tr><td><strong>X2</strong></td><td>60</td><td>1</td><td>2</td><td>0</td><td>1</td><td>0</td><td>0</td><td>16</td></tr><tr><td><strong>S3</strong></td><td>0</td><td>1</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>60</td></tr><tr><td><strong>Z</strong></td><td>—</td><td>80</td><td>60</td><td>0</td><td>0</td><td>0</td><td>M</td><td>3380</td></tr></tbody></table>`;
-    const simplexContainer = document.getElementById('simplex-table-container');
     function updateSimplexTable() {
       const method = document.querySelector('input[name="method"]:checked').value;
-      simplexContainer.innerHTML = method === 'bigm'
-        ? bigMTable
-        : '<p>El Simplex revisado calcula la solución usando la base y su inversa. El detalle de iteraciones se implementará en la vista paso a paso.</p>';
       document.getElementById('table-method-label').textContent = method === 'bigm' ? 'Método Gran M' : 'Método Simplex Revisado';
+      document.getElementById('step-iterations').innerHTML = '<p class="step-empty">Resuelve el problema con este método para ver sus iteraciones.</p>';
       document.querySelector('.status').textContent = method === 'bigm'
         ? 'Gran M · solución directa'
         : 'Simplex revisado · solución directa';
     }
     document.querySelectorAll('input[name="method"]').forEach(radio => radio.addEventListener('change', updateSimplexTable));
     updateSimplexTable();
+
+    function renderStepByStep(stepData) {
+      const container = document.getElementById('step-iterations');
+      container.innerHTML = '';
+      if (!stepData || !Array.isArray(stepData.columnas) || !Array.isArray(stepData.iteraciones)) {
+        container.innerHTML = '<p class="step-empty">El servidor no devolvió iteraciones para este método.</p>';
+        return;
+      }
+      document.getElementById('table-method-label').textContent = stepData.metodo === 'simplex_revisado' ? 'Método Simplex Revisado' : 'Método Gran M';
+      stepData.iteraciones.forEach((iteration, index) => {
+        const block = document.createElement('section');
+        block.className = 'step-iteration';
+        const reason = document.createElement('div');
+        reason.className = 'step-callout';
+        const number = document.createElement('span');
+        number.className = 'step-index';
+        number.textContent = `Iteración ${iteration.numero ?? index}`;
+        reason.append(number, document.createTextNode(iteration.justificacion || 'Iteración del método.'));
+
+        const tableWrap = document.createElement('div');
+        tableWrap.className = 'table-wrap';
+        const table = document.createElement('table');
+        table.className = 'matrix-table';
+        const thead = document.createElement('thead');
+        const headerRow = document.createElement('tr');
+        stepData.columnas.forEach(column => {
+          const th = document.createElement('th');
+          th.textContent = column;
+          headerRow.append(th);
+        });
+        thead.append(headerRow);
+        const tbody = document.createElement('tbody');
+        (iteration.filas || []).forEach(row => {
+          const tr = document.createElement('tr');
+          stepData.columnas.forEach(column => {
+            const td = document.createElement('td');
+            const value = row[column] ?? '';
+            if (column === 'Base' || column === 'Variables Básicas') {
+              const strong = document.createElement('strong');
+              strong.textContent = value;
+              td.append(strong);
+            } else {
+              td.textContent = value;
+            }
+            tr.append(td);
+          });
+          tbody.append(tr);
+        });
+        table.append(thead, tbody);
+        tableWrap.append(table);
+        block.append(reason, tableWrap);
+        container.append(block);
+      });
+    }
 
 
 // Mantiene las columnas de restricciones sincronizadas con las variables.
@@ -155,8 +205,10 @@ problemForm.addEventListener('submit', async event => {
       document.getElementById('constraint-results').innerHTML = result.restricciones.map(r =>
         `<tr><td><strong>${r.nombre}</strong></td><td>${r.lado_derecho}</td><td>${r.usado}</td><td>${r.holgura_exceso}</td><td><span class="pill">${r.estado}</span></td></tr>`
       ).join('');
+      renderStepByStep(result.paso_a_paso);
       showMessage(result.mensaje, true);
     } else {
+      document.getElementById('step-iterations').innerHTML = '<p class="step-empty">No hay iteraciones disponibles para este resultado.</p>';
       document.getElementById('solution-variables').innerHTML = '<p class="metric-value">—</p>';
       document.getElementById('solution-z').textContent = '—';
       document.getElementById('constraint-results').innerHTML = `<tr><td colspan="5">${result.mensaje}</td></tr>`;
